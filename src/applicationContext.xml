@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd   
+    http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd  
+    http://www.springframework.org/schema/tx   
+    http://www.springframework.org/schema/tx/spring-tx-3.2.xsd  
+    http://www.springframework.org/schema/aop  
+    http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+	<!-- 7、加载配置方案3:引入c3p0池 -->
+	<!-- 读取db.properties文件 -->
+	<context:property-placeholder location="classpath:db.properties" />
+	<!-- 7-1、配置c3p0连接池 -->
+	<bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+		<property name="driverClass" value="${jdbc.driverClass}"></property>
+		<property name="user" value="${jdbc.user}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+
+	<!-- 1、配置domain -->
+	<bean name="admin" class="cn.jyt.sims.pojo.Admin"></bean>
+	<bean name="student" class="cn.jyt.sims.pojo.Student"></bean>
+	<bean name="fileImage" class="cn.jyt.sims.pojo.FileImage"></bean>
+	<!-- 2、配置action -->
+	<!-- 注意:Action对象作用范围一定是多例的.这样才符合struts2架构 -->
+	<bean name="loginAction" class="cn.jyt.sims.action.LoginAction"
+		scope="prototype">
+		<!-- 值的set方法注入：在action中必须有userService的set方法 -->
+		<!-- 也可以用注解方式 -->
+		<property name="adminService" ref="adminService"></property>
+		<property name="studentService" ref="studentService"></property>
+	</bean>
+	<!-- 注意:Action对象作用范围一定是多例的.这样才符合struts2架构 -->
+	<bean name="adminManageAction" class="cn.jyt.sims.action.AdminManageAction"
+		scope="prototype">
+		<!-- 值的set方法注入：在action中必须有userService的set方法 -->
+		<!-- 也可以用注解方式 -->
+		<property name="admin" ref="admin"></property>
+		<property name="adminService" ref="adminService"></property>
+		<property name="fileImage" ref="fileImage"></property>
+	</bean>
+	<!-- 注意:Action对象作用范围一定是多例的.这样才符合struts2架构 -->
+	<bean name="studentManageAction" class="cn.jyt.sims.action.StudentManageAction"
+		scope="prototype">
+		<!-- 值的set方法注入：在action中必须有userService的set方法 -->
+		<!-- 也可以用注解方式 -->
+		<property name="student" ref="student"></property>
+		<property name="studentService" ref="studentService"></property>
+		<property name="fileImage" ref="fileImage"></property>
+	</bean>
+
+	<!-- 3、配置service -->
+	<bean name="adminService" class="cn.jyt.sims.service.impl.AdminServiceImpl">
+		<property name="adminDao" ref="adminDao"></property>
+	</bean>
+	<bean name="studentService" class="cn.jyt.sims.service.impl.StudentServiceImpl">
+		<property name="studentDao" ref="studentDao"></property>
+	</bean>
+
+	<!-- 4、配置dao -->
+	<bean name="adminDao" class="cn.jyt.sims.dao.impl.AdminDaoImpl">
+		<!-- 记得注入sessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean name="studentDao" class="cn.jyt.sims.dao.impl.StudentDaoImpl">
+		<!-- 记得注入sessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+
+	<!-- 5、配置sessionFactory，加载hibernate -->
+	<!-- 加载配置方案2:在spring配置中放置hibernate配置信息 -->
+	<bean name="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<!--  配置hibernate基本信息-->
+		<property name="hibernateProperties">
+			<props>
+				<!--  必选配置 -->
+				<prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver
+				</prop>
+				<prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/sims_new</prop>
+				<prop key="hibernate.connection.username">root</prop>
+				<prop key="hibernate.connection.password">root</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect
+				</prop>
+
+				<!--  可选配置 -->
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+		<!-- 引入orm元数据,指定orm元数据所在的包路径,spring会自动读取包中的所有配置 -->
+		<property name="mappingDirectoryLocations" value="classpath:cn/jyt/sims/pojo"></property>
+	</bean>
+
+	<!-- 6、配置spring的事物 -->
+	<!-- （必有）核心事务管理器 -->
+	<bean name="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 注解方式配置事物 -->
+	<!-- 6-2、开启注解事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+
+	<!-- 8、使用Spring的JdbcTemplate  -->
+	<!-- 配置Spring的jdbcTemplate 
+        并注入一个dataSource数据源-->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<!-- 7-2、使用dataSource -->
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- 9、使用Spring的HibernateTemplate  -->
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+</beans>

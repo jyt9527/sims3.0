@@ -1,0 +1,6 @@
+#Mon Apr 08 10:52:50 CST 2019
+eclipse.preferences.version=1
+encoding//WebRoot/database/sims_new.sql=UTF-8
+encoding//src/cn/jyt/sims/action/LoginAction.java=gbk
+encoding//src/cn/jyt/utils/HibernateUtils.java=UTF-8
+encoding/<project>=gbk

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!--引入包含所有常量配置constant的xml文件 -->
+	<include file="struts_constant.xml"></include>
+
+	<!--声明包，namespace：命名空间，相当于前缀，不能为空，至少有个“/”   extends：继承struts-default-->
+	<package name="cn.jyt.sims3.main" extends="struts-default"
+		namespace="/">
+		<!-- 定义action name：名称   class：类名   method：方法名-->
+		<action name="loginAction" class="loginAction" method="login">
+			<!-- 定义映射网页 name：为方法的返回值  type：-->
+			<result name="goToAdmin" type="dispatcher">admin/center1.jsp</result>
+			<result name="goToStudent" type="dispatcher">admin/center1.jsp</result>
+			<result name="failure" type="redirect">login.jsp</result>
+		</action>
+	</package>
+	<package name="cn.jyt.sims3.admin" extends="struts-default"
+		namespace="/">
+		<!-- 定义action name：名称   class：类名   method：方法名-->
+		<action name="adminManage_*" class="adminManageAction" method="{1}">
+			<!-- 定义映射网页 name：为方法的返回值  type：-->
+			<result name="listOK" type="dispatcher">admin/adminMaintain.jsp</result>
+			<result name="infoOK" type="dispatcher">admin/adminInfo.jsp</result>
+			<result name="addOK" type="redirectAction">adminManage_adminList</result>
+			<result name="updateTransmit" type="dispatcher">admin/adminModify.jsp
+			</result>
+			<result name="deleteOK" type="redirectAction">adminManage_adminList</result>
+			<result name="saveOK" type="redirectAction">adminManage_adminList</result>
+			<result name="upAdPwd" type="dispatcher">admin/myInfo.jsp</result>
+
+		</action>
+	</package>
+	<package name="cn.jyt.sims3.student" extends="struts-default"
+		namespace="/">
+		<!-- 定义action name：名称   class：类名   method：方法名-->
+		<action name="studentManage_*" class="studentManageAction"
+			method="{1}">
+			<!-- 定义映射网页 name：为方法的返回值  type：-->
+			<result name="listOK" type="dispatcher">admin/studentMaintain.jsp</result>
+			<result name="infoOK" type="dispatcher">admin/studentInfo.jsp</result>
+			<result name="addOK" type="redirectAction">studentManage_studentList</result>
+			<result name="updateTransmit" type="dispatcher">admin/studentModify.jsp
+			</result>
+			<result name="deleteOK" type="redirectAction">studentManage_studentList
+			</result>
+			<result name="saveOK" type="redirectAction">studentManage_studentList</result>
+		</action>
+	</package>
+</struts>

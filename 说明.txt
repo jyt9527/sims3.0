@@ -1,0 +1,1 @@
+sims3.0：本系统是用struts+hibernate+spring+mysql，运用三层架构思想做的一个管理系统

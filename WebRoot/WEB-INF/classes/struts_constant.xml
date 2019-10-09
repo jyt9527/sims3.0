@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!--
+		默认是“action”不写value也是“action”，在地址栏可以不写“action”，可以改为“do”，则只有加“.do”才能访问，也可以改为“do,action”，则在地址栏加上“.do”或“.action”才能访问，不加任何后缀，会出错
+	-->
+	<!-- "do,action,," 在地址栏输入加.do或.action或啥也不加都可以访问 -->
+	<constant name="struts.action.extension" value="do,action,," />
+	<!-- 是否启用开发模式 -->
+	<constant name="struts.devMode" value="true" />
+	<!-- struts配置文件改动后，是否重新加载 -->
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<!-- 设置浏览器是否缓存静态内容 -->
+	<constant name="struts.serve.static.browserCache" value="false" />
+
+	<!-- 设置全局资源文件名称为 message -->
+	<constant name="struts.custom.i18n.resources" value="message" />
+
+
+	<!-- 请求参数的编码方式 -->
+	<constant name="struts.i18n.encoding" value="utf-8" />
+	<!-- 每次HTTP请求系统都重新加载资源文件，有助于开发 -->
+	<constant name="struts.i18n.reload" value="true" />
+	<!-- 文件上传最大值 -->
+	<constant name="struts.multipart.maxSize" value="104857600" />
+	<!-- 让struts2支持动态方法调用 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<!-- Action名称中是否还是用斜线 -->
+	<constant name="struts.enable.SlashesInActionNames" value="false" />
+
+	<!-- 允许标签中使用表达式语法 -->
+	<constant name="struts.tag.altSyntax" value="true" />
+	<!-- 对于WebLogic,Orion,OC4J此属性应该设置成true -->
+	<constant name="struts.dispatcher.parametersWorkaround" value="false" />
+	<!--
+		在使用struts2的项目中上传文件的时候出现了一个这样的错误： 1 2 2012-6-22 18:29:02
+		com.opensymphony.xwork2.util.logging.commons.CommonsLogger info 信息:
+		Unable to find 'struts.multipart.saveDir' property setting. Defaulting
+		to javax.servlet.context.tempdir
+
+		原因是没有设置存放临时文件的文件夹，而错误提示中的struts.multipart.saveDir就是设置临时文件夹的属性，把该配置写到struts.properties文件中即可，如下：
+
+		struts.multipart.saveDir = /tmp 如果此文件夹不存在，Struts 2会自动创建一个。
+
+		也可以在struts.xml配置文件中添加一个常量设置：
+	-->
+	<constant name="struts.multipart.saveDir" value="/tmp"></constant>
+	<!--
+		默认是：xhtml主题，使用修改主题风格（全局）为，开发经常使用simple <constant
+		name="struts.ui.theme" value="simple" />
+	-->
+	<!-- 整合struts+spring -->
+	<!--
+		# struts.objectFactory = spring 将action的创建交给spring容器
+		struts.objectFactory.spring.autoWire = name spring负责装配Action依赖属性
+	-->
+	<constant name="struts.objectFactory" value="spring"></constant>
+</struts>

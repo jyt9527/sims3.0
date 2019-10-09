@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Struts2Diagram version="2.0">
+  <package name="cn.jyt.sims3.main" location="0,0" size="0,0">
+    <action name="loginAction" location="0,0" size="0,0">
+      <result name="goToAdmin">
+        <resourceEdge source="goToAdmin" routing="0" target="center1.jsp" />
+      </result>
+      <result name="goToStudent">
+        <resourceEdge source="goToStudent" routing="0" target="center1.jsp" />
+      </result>
+      <result name="failure">
+        <resourceEdge source="failure" routing="0" target="login.jsp" />
+      </result>
+    </action>
+  </package>
+  <package name="cn.jyt.sims3.admin" location="0,0" size="0,0">
+    <action name="adminManage_*" location="0,0" size="0,0">
+      <result name="listOK">
+        <resourceEdge source="listOK" routing="0" target="adminMaintain.jsp" />
+      </result>
+      <result name="infoOK">
+        <resourceEdge source="infoOK" routing="0" target="adminInfo.jsp" />
+      </result>
+      <result name="addOK" />
+      <result name="updateTransmit">
+        <resourceEdge source="updateTransmit" routing="0" target="adminModify.jsp" />
+      </result>
+      <result name="deleteOK" />
+      <result name="saveOK" />
+      <result name="upAdPwd">
+        <resourceEdge source="upAdPwd" routing="0" target="myInfo.jsp" />
+      </result>
+    </action>
+  </package>
+  <package name="cn.jyt.sims3.student" location="0,0" size="0,0">
+    <action name="studentManage_*" location="0,0" size="0,0">
+      <result name="listOK">
+        <resourceEdge source="listOK" routing="0" target="studentMaintain.jsp" />
+      </result>
+      <result name="infoOK">
+        <resourceEdge source="infoOK" routing="0" target="studentInfo.jsp" />
+      </result>
+      <result name="addOK" />
+      <result name="updateTransmit">
+        <resourceEdge source="updateTransmit" routing="0" target="studentModify.jsp" />
+      </result>
+      <result name="deleteOK" />
+      <result name="saveOK" />
+    </action>
+  </package>
+  <webResource name="center1.jsp" path="admin/center1.jsp" location="0,0" size="0,0" />
+  <webResource name="login.jsp" path="login.jsp" location="0,0" size="0,0" />
+  <webResource name="adminMaintain.jsp" path="admin/adminMaintain.jsp" location="0,0" size="0,0" />
+  <webResource name="adminInfo.jsp" path="admin/adminInfo.jsp" location="0,0" size="0,0" />
+  <webResource name="adminModify.jsp" path="admin/adminModify.jsp" location="0,0" size="0,0" />
+  <webResource name="studentMaintain.jsp" path="admin/studentMaintain.jsp" location="0,0" size="0,0" />
+  <webResource name="studentInfo.jsp" path="admin/studentInfo.jsp" location="0,0" size="0,0" />
+  <webResource name="studentModify.jsp" path="admin/studentModify.jsp" location="0,0" size="0,0" />
+  <webResource name="myInfo.jsp" path="admin/myInfo.jsp" location="0,0" size="0,0" />
+  <include file="struts_constant.xml" location="0,0" size="0,0" />
+</Struts2Diagram>
+
